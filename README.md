@@ -39,15 +39,35 @@ scripts/publish.sh --commit   # 额外在本仓库把这两个文件提交一次
 
 ## 怎么本地编译与测试
 
-硬件工具链（Verilator / Yosys / OpenSTA / ASAP7 库）由课程 AppImage 提供。
-两种使用方式，任选其一：
+硬件工具链（Verilator / Yosys / OpenSTA / ASAP7 库）不在本仓库里，需要自己准备。
+有三种情形，按你的情况选一种：
 
-1. 把 `cpu2026-tools-x86_64.AppImage` 放在本仓库根目录，框架会自动使用它；
-2. 或者使用开发仓库里已解包好的工具链（不需要 FUSE，也不污染系统）：
+**1. 只有本仓库（例如新机器、新队友）：把 AppImage 放到本仓库根目录。**
+
+框架的 `config.mk` 默认就在这个位置找它，放好之后所有 make 目标开箱即用。
+该文件已被框架的 `.gitignore` 忽略，不会进入提交。
 
 ```sh
-source ../CPU0/scripts/env.sh   # 本地目录名可能是 my，按实际路径调整
+cp /path/to/cpu2026-tools-x86_64.AppImage .   # 放在本仓库根目录
+make build
+```
 
+**2. 已经克隆了开发仓库 CPU0：复用它解包好的工具链（我们日常用这种方式）。**
+
+好处是不用每次挂载 AppImage、也不往系统里装任何东西。注意解包产物在开发仓库的
+`tools/` 下且被 git 忽略，新机器要先跑一次 `scripts/setup-tools.sh`（该脚本本身
+需要一个 AppImage 文件）。
+
+```sh
+source ../CPU0/scripts/env.sh   # 本地开发仓库目录名可能是 my，按实际路径调整
+make build
+```
+
+**3. OJ 评测时什么都不用做**：评测环境自带 Verilator，本地工具链只用于自测。
+
+常用命令（上面两种方式都适用）：
+
+```sh
 make build                      # 编译周期精确仿真器，产物 build/sim
 make test                       # 跑全部正确性用例
 make test Case=correctness_add_to_100
