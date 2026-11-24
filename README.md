@@ -77,11 +77,10 @@ make synth                      # Yosys + ASAP7 面积，OpenSTA 时序与最高
 
 ## 当前状态
 
-`verilog/generated/student_top.sv` 目前是**接口骨架**：模块名与 AXI4-Lite 端口
-完全符合课程要求，但所有 `valid`/`ready` 都拉低，不发起任何访存，因此正确性
-用例会以 `timeout` 失败。它的作用是先把
-「Chisel 生成 SystemVerilog → 框架编译 → 测试脚本运行」这条链路证明通，
-真正的乱序执行核心会在架构确定后逐步替换它。
+`verilog/generated/student_top.sv` 由开发仓库 `CPU0` 的 `hugechange` 分支提交
+`35cb536` 生成，已是完整的乱序执行核心，不再是最初的接口骨架。当前提交包
+已通过课程框架的 RTL 构建（`make build`），能够生成可执行仿真器；正确性与
+性能结果以对应源码版本的实际测试为准。
 
 ## 设计文档与报告
 
