@@ -78,9 +78,10 @@ make synth                      # Yosys + ASAP7 面积，OpenSTA 时序与最高
 ## 当前状态
 
 `verilog/generated/student_top.sv` 由开发仓库 `CPU0` 的 `hugechange` 分支提交
-`35cb536` 生成，已是完整的乱序执行核心，不再是最初的接口骨架。当前提交包
-已通过课程框架的 RTL 构建（`make build`），能够生成可执行仿真器；正确性与
-性能结果以对应源码版本的实际测试为准。
+`915db4a` 生成。当前预测器已将 4096 项 PHT 迁移到四个 `1024 x 3 bit` SRAM
+bank，其余小表继续保留在寄存器中。当前提交包已通过课程框架的 RTL 构建
+（`make build`）和代表性正确性回归；完整测试结果仍以对应源码版本的实际运行
+为准。
 
 ## 设计文档与报告
 
