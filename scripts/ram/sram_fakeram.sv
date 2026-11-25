@@ -40,11 +40,15 @@ module sram_fakeram #(
                     if (we) begin
                         // Merge locally, then schedule one array assignment.
                         // This also supports large lane counts in Verilator 5.020.
+                        // The temporary must use blocking assignments so the
+                        // nonblocking array update observes the merged value.
+                        /* verilator lint_off BLKSEQ */
                         next_word = words[addr];
                         for (lane = 0; lane < WIDTH / WRITE_GRANULARITY; lane = lane + 1)
                             if (wmask[lane])
                                 next_word[lane*WRITE_GRANULARITY +: WRITE_GRANULARITY]
                                     = wdata[lane*WRITE_GRANULARITY +: WRITE_GRANULARITY];
+                        /* verilator lint_on BLKSEQ */
                         words[addr] <= next_word;
                     end else begin
                         rdata <= words[addr];
