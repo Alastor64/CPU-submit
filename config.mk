@@ -36,6 +36,10 @@ ASAP7_LIB ?=
 SIM ?=
 # SIM = /absolute/path/to/my-simulator
 
+# Serialize the generated C++ build. Besides reducing peak memory, this avoids
+# GNU Make's FIFO jobserver, which needs /tmp in the OJ build sandbox.
+JOBS := 1
+
 # Other overrides accepted here or on the command line:
 # JOBS = 4
 # TESTCASES = /path/to/testcases
